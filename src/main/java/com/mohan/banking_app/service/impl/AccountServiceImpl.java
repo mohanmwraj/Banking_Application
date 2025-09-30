@@ -2,6 +2,7 @@ package com.mohan.banking_app.service.impl;
 
 import com.mohan.banking_app.dto.AccountDto;
 import com.mohan.banking_app.entity.Account;
+import com.mohan.banking_app.entity.TransferFundDto;
 import com.mohan.banking_app.exception.AccountException;
 import com.mohan.banking_app.mapper.AccountMapper;
 import com.mohan.banking_app.repository.AccountRepository;
@@ -83,6 +84,22 @@ public class AccountServiceImpl implements AccountService {
                 .orElseThrow(() -> new AccountException("Account does not exists"));
 
         accountRepository.deleteById(id);
+    }
+
+    @Override
+    public void transferFunds(TransferFundDto transferFundDto) {
+        Account fromAccount = accountRepository
+                .findById(transferFundDto.fromAccountId())
+                .orElseThrow(() -> new AccountException("Account Does not exists"));
+        Account toAccount = accountRepository
+                .findById(transferFundDto.toAccountId())
+                .orElseThrow(() -> new AccountException("Account Does not exists"));
+
+        fromAccount.setBalance(fromAccount.getBalance() - transferFundDto.amount());
+        toAccount.setBalance(toAccount.getBalance() + transferFundDto.amount());
+
+        accountRepository.save(fromAccount);
+        accountRepository.save(toAccount);
     }
 
 

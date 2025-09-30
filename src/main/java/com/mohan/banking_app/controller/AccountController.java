@@ -1,6 +1,7 @@
 package com.mohan.banking_app.controller;
 
 import com.mohan.banking_app.dto.AccountDto;
+import com.mohan.banking_app.entity.TransferFundDto;
 import com.mohan.banking_app.service.AccountService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -79,5 +80,12 @@ public class AccountController {
     public  ResponseEntity<String> deleteAccount(@PathVariable Long id){
         accountService.deleteAccount(id);
         return ResponseEntity.ok("Account is Deleted Successfully!");
+    }
+
+    //Transfer Funds REST API
+    @PostMapping("/transfer")
+    public ResponseEntity<String> transferFund(@RequestBody TransferFundDto transferFundDto){
+        accountService.transferFunds(transferFundDto);
+        return ResponseEntity.ok("Transfer Successfull");
     }
 }
