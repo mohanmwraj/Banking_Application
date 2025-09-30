@@ -7,6 +7,8 @@ import com.mohan.banking_app.repository.AccountRepository;
 import com.mohan.banking_app.service.AccountService;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 public class AccountServiceImpl implements AccountService {
 
@@ -61,5 +63,14 @@ public class AccountServiceImpl implements AccountService {
         Account savedAccount = accountRepository.save(account);
 
         return AccountMapper.mapToAccountDto(savedAccount);
+    }
+
+    @Override
+    public List<AccountDto> getAllAccounts() {
+        List<Account> accounts = accountRepository.findAll();
+
+       return accounts.stream()
+                .map(AccountMapper::mapToAccountDto)
+                .toList();
     }
 }
