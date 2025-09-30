@@ -22,6 +22,7 @@ public class AccountServiceImpl implements AccountService {
 
     private static final String TRANSACTION_TYPE_DEPOSIT = "DEPOSIT";
     private static final String TRANSACTION_TYPE_WITHDRAW = "WITHDRAW";
+    private static final String TRANSACTION_TYPE_TRANSFER = "TRANSFER";
 
     public AccountServiceImpl(AccountRepository accountRepository,
                               TransactionRepository transactionRepository) {
@@ -122,6 +123,14 @@ public class AccountServiceImpl implements AccountService {
 
         accountRepository.save(fromAccount);
         accountRepository.save(toAccount);
+
+        Transaction transaction = new Transaction();
+        transaction.setAccountId(transferFundDto.fromAccountId());
+        transaction.setAmount(transferFundDto.amount());
+        transaction.setTransactionType(TRANSACTION_TYPE_TRANSFER);
+        transaction.setTimeStamp(LocalDateTime.now());
+        transactionRepository.save(transaction);
+
     }
 
 
