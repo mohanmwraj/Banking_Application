@@ -4,10 +4,7 @@ import com.mohan.banking_app.dto.AccountDto;
 import com.mohan.banking_app.service.AccountService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/api/accounts")
@@ -20,8 +17,21 @@ public class AccountController {
     }
 
     // Add Account REST API
+    // http://localhost:8080/api/accounts
+    // JSON Payload: {
+    //    "accountHolderName" : "Name",
+    //    "balance" : 10000000
+    //}
     @PostMapping
     public ResponseEntity<AccountDto> addAccount(@RequestBody AccountDto accountDto){
         return new ResponseEntity<>(accountService.createAccount(accountDto), HttpStatus.CREATED);
+    }
+
+    // Get Account REST API
+    // http://localhost:8080/api/accounts/2
+    @GetMapping("/{id}")
+    public ResponseEntity<AccountDto> getAccountById(@PathVariable Long id){
+        AccountDto accountDto = accountService.getAccountById(id);
+        return ResponseEntity.ok(accountDto);
     }
 }
