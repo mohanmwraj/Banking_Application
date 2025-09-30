@@ -21,6 +21,7 @@ public class AccountServiceImpl implements AccountService {
     private final TransactionRepository transactionRepository;
 
     private static final String TRANSACTION_TYPE_DEPOSIT = "DEPOSIT";
+    private static final String TRANSACTION_TYPE_WITHDRAW = "WITHDRAW";
 
     public AccountServiceImpl(AccountRepository accountRepository,
                               TransactionRepository transactionRepository) {
@@ -77,6 +78,13 @@ public class AccountServiceImpl implements AccountService {
         double total = account.getBalance() - amount;
         account.setBalance(total);
         Account savedAccount = accountRepository.save(account);
+
+        Transaction transaction = new Transaction();
+        transaction.setAccountId(account.getId());
+        transaction.setAmount(amount);
+        transaction.setTransactionType(TRANSACTION_TYPE_WITHDRAW);
+        transaction.setTimeStamp(LocalDateTime.now());
+        transactionRepository.save(transaction);
 
         return AccountMapper.mapToAccountDto(savedAccount);
     }
