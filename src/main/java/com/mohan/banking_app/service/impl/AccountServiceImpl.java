@@ -1,6 +1,7 @@
 package com.mohan.banking_app.service.impl;
 
 import com.mohan.banking_app.dto.AccountDto;
+import com.mohan.banking_app.dto.TransactionDto;
 import com.mohan.banking_app.entity.Account;
 import com.mohan.banking_app.dto.TransferFundDto;
 import com.mohan.banking_app.entity.Transaction;
@@ -137,5 +138,24 @@ public class AccountServiceImpl implements AccountService {
 
     }
 
+    @Override
+    public List<TransactionDto> getAccountTransactions(Long accountId) {
 
+        List<Transaction> transactions = transactionRepository
+                .findByAccountIdOrderByTimeStampDesc(accountId);
+
+        return transactions.stream()
+                .map(this::convertEntityToDto)
+                .toList();
+    }
+
+    private TransactionDto convertEntityToDto(Transaction transaction){
+        return new TransactionDto(
+                transaction.getId(),
+                transaction.getAccountId(),
+                transaction.getAmount(),
+                transaction.getTransactionType(),
+                transaction.getTimeStamp()
+        );
+    }
 }

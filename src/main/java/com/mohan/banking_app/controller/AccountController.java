@@ -1,6 +1,7 @@
 package com.mohan.banking_app.controller;
 
 import com.mohan.banking_app.dto.AccountDto;
+import com.mohan.banking_app.dto.TransactionDto;
 import com.mohan.banking_app.dto.TransferFundDto;
 import com.mohan.banking_app.service.AccountService;
 import org.springframework.http.HttpStatus;
@@ -87,5 +88,12 @@ public class AccountController {
     public ResponseEntity<String> transferFund(@RequestBody TransferFundDto transferFundDto){
         accountService.transferFunds(transferFundDto);
         return ResponseEntity.ok("Transfer Successfull");
+    }
+
+    //Build Transaction REST API
+    @GetMapping("/{id}/transactions")
+    public ResponseEntity<List<TransactionDto>> fetchAccountTransactions(@PathVariable("id") Long accountId){
+        List<TransactionDto> transactions = accountService.getAccountTransactions(accountId);
+        return ResponseEntity.ok(transactions);
     }
 }
