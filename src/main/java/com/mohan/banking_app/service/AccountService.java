@@ -1,7 +1,7 @@
 package com.mohan.banking_app.service;
 
 import com.mohan.banking_app.dto.AccountDto;
-import com.mohan.banking_app.entity.TransferFundDto;
+import com.mohan.banking_app.dto.TransferFundDto;
 
 import java.util.List;
 

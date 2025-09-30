@@ -1,7 +1,7 @@
 package com.mohan.banking_app.controller;
 
 import com.mohan.banking_app.dto.AccountDto;
-import com.mohan.banking_app.entity.TransferFundDto;
+import com.mohan.banking_app.dto.TransferFundDto;
 import com.mohan.banking_app.service.AccountService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

@@ -2,22 +2,30 @@ package com.mohan.banking_app.service.impl;
 
 import com.mohan.banking_app.dto.AccountDto;
 import com.mohan.banking_app.entity.Account;
-import com.mohan.banking_app.entity.TransferFundDto;
+import com.mohan.banking_app.dto.TransferFundDto;
+import com.mohan.banking_app.entity.Transaction;
 import com.mohan.banking_app.exception.AccountException;
 import com.mohan.banking_app.mapper.AccountMapper;
 import com.mohan.banking_app.repository.AccountRepository;
+import com.mohan.banking_app.repository.TransactionRepository;
 import com.mohan.banking_app.service.AccountService;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Service
 public class AccountServiceImpl implements AccountService {
 
     private final AccountRepository accountRepository;
+    private final TransactionRepository transactionRepository;
 
-    public AccountServiceImpl(AccountRepository accountRepository) {
+    private static final String TRANSACTION_TYPE_DEPOSIT = "DEPOSIT";
+
+    public AccountServiceImpl(AccountRepository accountRepository,
+                              TransactionRepository transactionRepository) {
         this.accountRepository = accountRepository;
+        this.transactionRepository = transactionRepository;
     }
 
     @Override
@@ -46,6 +54,12 @@ public class AccountServiceImpl implements AccountService {
         account.setBalance(total);
         Account savedAccount = accountRepository.save(account);
 
+        Transaction transaction = new Transaction();
+        transaction.setAccountId(account.getId());
+        transaction.setAmount(amount);
+        transaction.setTransactionType(TRANSACTION_TYPE_DEPOSIT);
+        transaction.setTimeStamp(LocalDateTime.now());
+        transactionRepository.save(transaction);
         return AccountMapper.mapToAccountDto(savedAccount);
     }
 
